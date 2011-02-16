@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Couriertrack</title>
-  <%= stylesheet_link_tag :all %>
+  <title>Courier Track</title>
+<!-- START:stylesheet -->
+  <%= stylesheet_link_tag "scaffold" %>
+  <%= stylesheet_link_tag "depot", :media => "all" %><!-- <label id="code.slt"/> -->
+<!-- END:stylesheet -->
   <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
+  <%= csrf_meta_tag %><!-- <label id="code.csrf"/> -->
 </head>
-<body>
-
-<%= yield %>
-
+<body id="store">
+  <div id="banner">
+    <%= @page_title || "Courier Track" %><!-- <label id="code.depot.e.title"/> -->
+    <% if current_courier %>
+    <%= link_to "Edit Courier Profile", edit_courier_path(current_courier.id) %>
+    <%= link_to "Logout", :logout %>
+    <% else %>
+    <%= link_to "Register New Courier", new_courier_path %>
+    <%= link_to "Courier Login", :login %>
+    <% end %>
+  </div>
+  <div id="columns">
+    <div id="side">
+      <a href="http://www....">Home</a><br />
+      <a href="http://www..../faq">Questions</a><br />
+      <a href="http://www..../news">News</a><br />
+      <a href="http://www..../contact">Contact</a><br />
+    </div>
+    <div id="main">
+      <%= yield %><!-- <label id="code.depot.e.include"/> -->
+    </div>
+  </div>
 </body>
 </html>

@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Username:</b>
+  <%= @courier_session.username %>
+</p>
+
+<p>
+  <b>Password:</b>
+  <%= @courier_session.password %>
+</p>
+
+
+<%= link_to 'Edit', edit_courier_session_path(@courier_session) %> |
+<%= link_to 'Back', courier_sessions_path %>
