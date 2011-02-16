@@ -4,7 +4,9 @@ class CreateCouriers < ActiveRecord::Migration
       t.string :email
       t.string :phone
       t.string :username
-      t.string :password
+      t.string :crypted_password
+      t.string :password_salt
+      t.string :persistence_token
       t.decimal :max_volume
       t.decimal :max_mass
       t.boolean :available

@@ -44,7 +44,7 @@ class CouriersController < ApplicationController
 
     respond_to do |format|
       if @courier.save
-        format.html { redirect_to(@courier, :notice => 'Courier was successfully created.') }
+        format.html { redirect_to(@courier, :notice => 'Registration successfull.') }
         format.xml  { render :xml => @courier, :status => :created, :location => @courier }
       else
         format.html { render :action => "new" }
