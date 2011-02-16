@@ -1,0 +1,49 @@
+<h1>Listing couriers</h1>
+
+<table>
+  <tr>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Username</th>
+    <th>Password</th>
+    <th>Max volume</th>
+    <th>Max mass</th>
+    <th>Available</th>
+    <th>Transport mode</th>
+    <th>Cost per distance</th>
+    <th>Cost per distance per mass</th>
+    <th>Cost per distance per volume</th>
+    <th>Last coordinate update time</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @couriers.each do |courier| %>
+  <tr>
+    <td><%= courier.email %></td>
+    <td><%= courier.phone %></td>
+    <td><%= courier.username %></td>
+    <td><%= courier.password %></td>
+    <td><%= courier.max_volume %></td>
+    <td><%= courier.max_mass %></td>
+    <td><%= courier.available %></td>
+    <td><%= courier.transport_mode %></td>
+    <td><%= courier.cost_per_distance %></td>
+    <td><%= courier.cost_per_distance_per_mass %></td>
+    <td><%= courier.cost_per_distance_per_volume %></td>
+    <td><%= courier.last_coordinate_update_time %></td>
+    <td><%= courier.latitude %></td>
+    <td><%= courier.longitude %></td>
+    <td><%= link_to 'Show', courier %></td>
+    <td><%= link_to 'Edit', edit_courier_path(courier) %></td>
+    <td><%= link_to 'Destroy', courier, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Courier', new_courier_path %>

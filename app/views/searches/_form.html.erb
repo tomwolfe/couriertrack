@@ -1,0 +1,41 @@
+<%= form_for(@search) do |f| %>
+  <% if @search.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@search.errors.count, "error") %> prohibited this search from being saved:</h2>
+
+      <ul>
+      <% @search.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :min_volume %><br />
+    <%= f.text_field :min_volume %>
+  </div>
+  <div class="field">
+    <%= f.label :min_mass %><br />
+    <%= f.text_field :min_mass %>
+  </div>
+  <div class="field">
+    <%= f.label :transport_mode %><br />
+    <%= f.select :transport_mode, Delivery::TRANSPORT_MODES, :prompt => "Select a tranport mode" %>
+  </div>
+  <div class="field">
+    <%= f.label :total_cost_less_than %><br />
+    <%= f.text_field :total_cost_less_than %>
+  </div>
+  <div class="field">
+    <%= f.label :last_coordinate_update_time_greater_than %><br />
+    <%= f.datetime_select :last_coordinate_update_time_greater_than %>
+  </div>
+    <div class="field">
+    <%= f.label :max_distance %><br />
+    <%= f.select :max_distance, Search::MAX_DISTANCES, :prompt => "Select the max distance between the couriers current location and the pickup address" %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

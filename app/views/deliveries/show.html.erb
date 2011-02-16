@@ -1,0 +1,50 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Pickup address:</b>
+  <%= @delivery.pickup_address %>
+</p>
+
+<p>
+  <b>Pickup name:</b>
+  <%= @delivery.pickup_name %>
+</p>
+
+<p>
+  <b>Dropoff address:</b>
+  <%= @delivery.dropoff_address %>
+</p>
+
+<p>
+  <b>Dropoff name:</b>
+  <%= @delivery.dropoff_name %>
+</p>
+
+<p>
+  <b>Number of packages:</b>
+  <%= @delivery.number_of_packages %>
+</p>
+
+<p>
+  <b>Mass:</b>
+  <%= @delivery.mass %>
+</p>
+
+<p>
+  <b>Volume:</b>
+  <%= @delivery.volume %>
+</p>
+
+<p>
+  <b>Delivery due:</b>
+  <%= @delivery.delivery_due %>
+</p>
+
+<p>
+  <b>Courier:</b>
+  <%= @delivery.courier_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_courier_delivery_path(@courier, @delivery) %> |
+<%= link_to 'Back', courier_deliveries_path %>

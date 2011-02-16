@@ -1,0 +1,31 @@
+<h1>Listing searches</h1>
+
+<table>
+  <tr>
+    <th>Min volume</th>
+    <th>Min mass</th>
+    <th>Transport mode</th>
+    <th>Total cost less than</th>
+    <th>Last coordinate update time greater than</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @searches.each do |search| %>
+  <tr>
+    <td><%= search.min_volume %></td>
+    <td><%= search.min_mass %></td>
+    <td><%= search.transport_mode %></td>
+    <td><%= search.total_cost_less_than %></td>
+    <td><%= search.last_coordinate_update_time_greater_than %></td>
+    <td><%= link_to 'Show', search %></td>
+    <td><%= link_to 'Edit', edit_search_path(search) %></td>
+    <td><%= link_to 'Destroy', search, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Search', new_search_path %>
