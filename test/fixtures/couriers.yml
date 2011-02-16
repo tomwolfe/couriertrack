@@ -1,0 +1,33 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  email: MyString
+  phone: MyString
+  username: MyString
+  password: MyString
+  max_volume: 9.99
+  max_mass: 9.99
+  available: false
+  transport_mode: MyString
+  cost_per_distance: 9.99
+  cost_per_distance_per_mass: 9.99
+  cost_per_distance_per_volume: 9.99
+  last_coordinate_update_time: 2011-02-09 09:16:11
+  latitude: 9.99
+  longitude: 9.99
+
+two:
+  email: MyString
+  phone: MyString
+  username: MyString
+  password: MyString
+  max_volume: 9.99
+  max_mass: 9.99
+  available: false
+  transport_mode: MyString
+  cost_per_distance: 9.99
+  cost_per_distance_per_mass: 9.99
+  cost_per_distance_per_volume: 9.99
+  last_coordinate_update_time: 2011-02-09 09:16:11
+  latitude: 9.99
+  longitude: 9.99

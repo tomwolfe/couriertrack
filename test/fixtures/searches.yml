@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  min_volume: 9.99
+  min_mass: 9.99
+  transport_mode: MyString
+  total_cost_less_than: 9.99
+  last_coordinate_update_time_greater_than: 2011-02-09 13:59:30
+
+two:
+  min_volume: 9.99
+  min_mass: 9.99
+  transport_mode: MyString
+  total_cost_less_than: 9.99
+  last_coordinate_update_time_greater_than: 2011-02-09 13:59:30

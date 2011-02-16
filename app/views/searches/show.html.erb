@@ -1,0 +1,17 @@
+<table>
+	<tr>
+		<td>Max Volume</td>
+		<td>Max Mass</td>
+		<td>Link</td>
+	</tr>
+	<% @found_couriers.each do |courier| %>
+		<tr>
+			<td><%= courier.max_volume %></td>
+			<td><%= courier.max_mass %></td>
+			<td><%= link_to 'View Courier', courier_path(courier) %></td>
+			<td><%= link_to 'New Delivery With This Courier', new_courier_delivery_path(courier) %></td>
+		</tr>
+	<% end %>
+</table>
+<%= link_to 'Edit', edit_search_path(@search) %> |
+<%= link_to 'Back', searches_path %>

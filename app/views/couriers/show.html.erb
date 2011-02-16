@@ -1,0 +1,76 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Email:</b>
+  <%= @courier.email %>
+</p>
+
+<p>
+  <b>Phone:</b>
+  <%= @courier.phone %>
+</p>
+
+<p>
+  <b>Username:</b>
+  <%= @courier.username %>
+</p>
+
+<p>
+  <b>Password:</b>
+  <%= @courier.password %>
+</p>
+
+<p>
+  <b>Max volume:</b>
+  <%= @courier.max_volume %>
+</p>
+
+<p>
+  <b>Max mass:</b>
+  <%= @courier.max_mass %>
+</p>
+
+<p>
+  <b>Available:</b>
+  <%= @courier.available %>
+</p>
+
+<p>
+  <b>Transport mode:</b>
+  <%= @courier.transport_mode %>
+</p>
+
+<p>
+  <b>Cost per distance:</b>
+  <%= @courier.cost_per_distance %>
+</p>
+
+<p>
+  <b>Cost per distance per mass:</b>
+  <%= @courier.cost_per_distance_per_mass %>
+</p>
+
+<p>
+  <b>Cost per distance per volume:</b>
+  <%= @courier.cost_per_distance_per_volume %>
+</p>
+
+<p>
+  <b>Last coordinate update time:</b>
+  <%= @courier.last_coordinate_update_time %>
+</p>
+
+<p>
+  <b>Latitude:</b>
+  <%= @courier.latitude %>
+</p>
+
+<p>
+  <b>Longitude:</b>
+  <%= @courier.longitude %>
+</p>
+
+
+<%= link_to 'Edit', edit_courier_path(@courier) %> |
+<%= link_to 'Back', couriers_path %> |
+<%= link_to 'Deliveries', courier_deliveries_path(@courier) %>

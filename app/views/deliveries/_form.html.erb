@@ -1,0 +1,49 @@
+<%= form_for([@courier, @delivery]) do |f| %>
+  <% if @delivery.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@delivery.errors.count, "error") %> prohibited this delivery from being saved:</h2>
+
+      <ul>
+      <% @delivery.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :pickup_address %><br />
+    <%= f.text_field :pickup_address %>
+  </div>
+  <div class="field">
+    <%= f.label :pickup_name %><br />
+    <%= f.text_field :pickup_name %>
+  </div>
+  <div class="field">
+    <%= f.label :dropoff_address %><br />
+    <%= f.text_field :dropoff_address %>
+  </div>
+  <div class="field">
+    <%= f.label :dropoff_name %><br />
+    <%= f.text_field :dropoff_name %>
+  </div>
+  <div class="field">
+    <%= f.label :number_of_packages %><br />
+    <%= f.text_field :number_of_packages %>
+  </div>
+  <div class="field">
+    <%= f.label :mass %><br />
+    <%= f.text_field :mass %>
+  </div>
+  <div class="field">
+    <%= f.label :volume %><br />
+    <%= f.text_field :volume %>
+  </div>
+  <div class="field">
+    <%= f.label :delivery_due %><br />
+    <%= f.datetime_select :delivery_due %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
