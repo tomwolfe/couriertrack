@@ -1,11 +1,12 @@
 Couriertrack::Application.routes.draw do
 
-  resources :users
-
-  resources :searches, :user_sessions
+  resources :searches, :user_sessions, :courier_sessions, :users
   
-  match 'login' => 'courier_sessions#new', :as => :login
-  match 'logout' => 'courier_sessions#destroy', :as => :logout
+  match 'courier_login' => 'courier_sessions#new', :as => :courier_login
+  match 'courier_logout' => 'courier_sessions#destroy', :as => :courier_logout
+  
+  match 'user_login' => 'user_sessions#new', :as => :user_login
+  match 'user_logout' => 'user_sessions#destroy', :as => :user_logout
 
   resources :couriers do
   	resources :deliveries

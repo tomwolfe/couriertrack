@@ -12,13 +12,20 @@
 <body id="store">
   <div id="banner">
     <%= @page_title || "Courier Track" %><!-- <label id="code.depot.e.title"/> -->
-    <% if current_courier %>
-    <%= link_to "Edit Courier Profile", edit_courier_path(current_courier.id) %>
-    <%= link_to "Logout", :logout %>
-    <% else %>
-    <%= link_to "Register New Courier", new_courier_path %>
-    <%= link_to "Courier Login", :login %>
-    <% end %>
+    <div id="sessions">
+	    <% if current_courier %>
+		    <%= link_to "Edit Courier Profile", edit_courier_path(current_courier.id) %>
+		    <%= link_to "Courier Logout", :courier_logout %>
+	    <% elsif current_user %>
+	    	<%= link_to "Edit User Profile", edit_user_path(current_user.id) %>
+	    	<%= link_to "User Logout", :user_logout %>
+	    <% else %>
+		    <%= link_to "Register New Courier", new_courier_path %>
+		    <%= link_to "Courier Login", :courier_login %> | 
+		    <%= link_to "Register New User", new_user_path %>
+		    <%= link_to "User Login", :user_login %>
+	    <% end %>
+    </div>
   </div>
   <div id="columns">
     <div id="side">

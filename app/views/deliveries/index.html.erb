@@ -10,7 +10,6 @@
     <th>Mass</th>
     <th>Volume</th>
     <th>Delivery due</th>
-    <th>Courier</th>
   </tr>
 
 <% @deliveries.each do |delivery| %>
@@ -23,7 +22,6 @@
     <td><%= delivery.mass %></td>
     <td><%= delivery.volume %></td>
     <td><%= delivery.delivery_due %></td>
-    <td><%= delivery.courier_id %></td>
     <td><%= link_to 'Show', courier_delivery_path(@courier, delivery) %></td>
     <td><%= link_to 'Edit', edit_courier_delivery_path(@courier, delivery) %></td>
     <td><%= link_to 'Destroy', [@courier, delivery], :confirm => 'Are you sure?', :method => :delete %></td>

@@ -44,7 +44,7 @@ class UserSessionsController < ApplicationController
 
     respond_to do |format|
       if @user_session.save
-        format.html { redirect_to(:couriers, :notice => 'Login successful.') }
+        format.html { redirect_to(:users, :notice => 'Login successful.') }
         format.xml  { render :xml => @user_session, :status => :created, :location => @user_session }
       else
         format.html { render :action => "new" }
@@ -76,7 +76,7 @@ class UserSessionsController < ApplicationController
     @user_session.destroy
 
     respond_to do |format|
-      format.html { redirect_to(:couriers, :notice => 'Goodbye!') }
+      format.html { redirect_to(:users, :notice => 'Goodbye!') }
       format.xml  { head :ok }
     end
   end
