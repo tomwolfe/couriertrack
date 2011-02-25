@@ -1,5 +1,7 @@
 Couriertrack::Application.routes.draw do
 
+  resources :distance_prices
+
   resources :searches, :user_sessions, :courier_sessions, :users
   
   match 'courier_login' => 'courier_sessions#new', :as => :courier_login

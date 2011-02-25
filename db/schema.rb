@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110216034532) do
+ActiveRecord::Schema.define(:version => 20110223085756) do
 
   create_table "couriers", :force => true do |t|
     t.string   "email"
@@ -19,16 +19,16 @@ ActiveRecord::Schema.define(:version => 20110216034532) do
     t.string   "crypted_password"
     t.string   "password_salt"
     t.string   "persistence_token"
-    t.decimal  "max_volume"
-    t.decimal  "max_mass"
+    t.decimal  "max_volume",                   :precision => 10, :scale => 0
+    t.decimal  "max_mass",                     :precision => 10, :scale => 0
     t.boolean  "available"
     t.string   "transport_mode"
-    t.decimal  "cost_per_distance"
-    t.decimal  "cost_per_distance_per_mass"
-    t.decimal  "cost_per_distance_per_volume"
+    t.decimal  "cost_per_distance",            :precision => 10, :scale => 0
+    t.decimal  "cost_per_distance_per_mass",   :precision => 10, :scale => 0
+    t.decimal  "cost_per_distance_per_volume", :precision => 10, :scale => 0
     t.datetime "last_coordinate_update_time"
-    t.decimal  "latitude"
-    t.decimal  "longitude"
+    t.decimal  "lat",                          :precision => 9,  :scale => 6
+    t.decimal  "lng",                          :precision => 9,  :scale => 6
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -39,24 +39,38 @@ ActiveRecord::Schema.define(:version => 20110216034532) do
     t.string   "dropoff_address"
     t.string   "dropoff_name"
     t.integer  "number_of_packages"
-    t.decimal  "mass"
-    t.decimal  "volume"
-    t.decimal  "cost"
+    t.decimal  "mass",                   :precision => 10, :scale => 0
+    t.decimal  "volume",                 :precision => 10, :scale => 0
+    t.decimal  "cost",                   :precision => 10, :scale => 0
     t.datetime "delivery_due"
+    t.boolean  "successfully_delivered"
+    t.integer  "waypoint_order"
+    t.decimal  "lat",                    :precision => 9,  :scale => 6
+    t.decimal  "lng",                    :precision => 9,  :scale => 6
     t.integer  "courier_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "searches", :force => true do |t|
-    t.decimal  "min_volume"
-    t.decimal  "min_mass"
-    t.string   "transport_mode"
-    t.decimal  "total_cost_less_than"
-    t.datetime "last_coordinate_update_time_greater_than"
+  create_table "distances", :force => true do |t|
+    t.decimal  "est_distance", :precision => 10, :scale => 0
+    t.decimal  "distance",     :precision => 10, :scale => 0
+    t.integer  "courier_id"
+    t.integer  "search_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "max_distance"
+  end
+
+  create_table "searches", :force => true do |t|
+    t.decimal  "min_volume",                               :precision => 10, :scale => 0
+    t.decimal  "min_mass",                                 :precision => 10, :scale => 0
+    t.string   "transport_mode"
+    t.decimal  "total_cost_less_than",                     :precision => 10, :scale => 0
+    t.datetime "last_coordinate_update_time_greater_than"
+    t.string   "pickup_address"
+    t.integer  "max_distance"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_sessions", :force => true do |t|

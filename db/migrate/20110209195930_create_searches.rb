@@ -6,6 +6,8 @@ class CreateSearches < ActiveRecord::Migration
       t.string :transport_mode
       t.decimal :total_cost_less_than
       t.datetime :last_coordinate_update_time_greater_than
+      t.string :pickup_address
+      t.integer :max_distance
 
       t.timestamps
     end

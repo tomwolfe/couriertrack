@@ -31,9 +31,13 @@
     <%= f.label :last_coordinate_update_time_greater_than %><br />
     <%= f.datetime_select :last_coordinate_update_time_greater_than %>
   </div>
-    <div class="field">
+  <div class="field">
     <%= f.label :max_distance %><br />
     <%= f.select :max_distance, Search::MAX_DISTANCES, :prompt => "Select the max distance between the couriers current location and the pickup address" %>
+  </div>
+  <div class="field">
+    <%= f.label :pickup_address %><br />
+    <%= f.text_field :pickup_address %>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -10,6 +10,10 @@ class CreateDeliveries < ActiveRecord::Migration
       t.decimal :volume
       t.decimal :cost
       t.datetime :delivery_due
+      t.boolean :successfully_delivered
+      t.integer :waypoint_order
+      t.decimal :lat, :precision => 9, :scale => 6
+      t.decimal :lng, :precision => 9, :scale => 6
       t.integer :courier_id
 
       t.timestamps
