@@ -15,8 +15,8 @@ class CreateCouriers < ActiveRecord::Migration
       t.decimal :cost_per_distance_per_mass
       t.decimal :cost_per_distance_per_volume
       t.datetime :last_coordinate_update_time
-      t.decimal :latitude
-      t.decimal :longitude
+      t.decimal :lat, :precision => 9, :scale => 6
+      t.decimal :lng, :precision => 9, :scale => 6
 
       t.timestamps
     end

@@ -46,6 +46,7 @@ class DeliveriesController < ApplicationController
   def create
   	@courier = Courier.find(params[:courier_id])
     @delivery = @courier.deliveries.build(params[:delivery])
+    @delivery = @delivery.set_coordinates(@delivery)
 
     respond_to do |format|
       if @delivery.save
@@ -66,6 +67,8 @@ class DeliveriesController < ApplicationController
 
     respond_to do |format|
       if @delivery.update_attributes(params[:delivery])
+      	@delivery = @delivery.set_coordinates(@delivery)
+      	@delivery.save
         format.html { redirect_to(courier_delivery_path(@courier, @delivery), :notice => 'Delivery was successfully updated.') }
         format.xml  { head :ok }
       else

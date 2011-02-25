@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  est_distance: 9.99
+  distance: 9.99
+  courier_id: 1
+  search_id: 1
+
+two:
+  est_distance: 9.99
+  distance: 9.99
+  courier_id: 1
+  search_id: 1

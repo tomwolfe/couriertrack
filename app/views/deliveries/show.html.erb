@@ -45,6 +45,11 @@
   <%= @delivery.courier_id %>
 </p>
 
+<p>
+  <b>Successfully delivered:</b>
+  <%= @delivery.successfully_delivered %>
+</p>
+
 
 <%= link_to 'Edit', edit_courier_delivery_path(@courier, @delivery) %> |
 <%= link_to 'Back', courier_deliveries_path %>
