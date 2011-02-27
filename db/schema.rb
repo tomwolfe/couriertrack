@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(:version => 20110223085756) do
     t.decimal  "cost_per_distance_per_mass",   :precision => 10, :scale => 0
     t.decimal  "cost_per_distance_per_volume", :precision => 10, :scale => 0
     t.datetime "last_coordinate_update_time"
+    t.decimal  "current_volume",               :precision => 10, :scale => 0, :default => 0
+    t.decimal  "current_mass",                 :precision => 10, :scale => 0, :default => 0
     t.decimal  "lat",                          :precision => 9,  :scale => 6
     t.decimal  "lng",                          :precision => 9,  :scale => 6
     t.datetime "created_at"

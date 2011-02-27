@@ -4,10 +4,8 @@ class Delivery < ActiveRecord::Base
 	
 	TRANSPORT_MODES = [ "Bicycle", "Car", "Truck", "Train", "Airplane", "Boat" ]
 	
-	def set_coordinates(delivery)
-		loc = GeoKit::Geocoders::MultiGeocoder.geocode(delivery.dropoff_address)
-	    delivery.lat = loc.lat
-	    delivery.lng = loc.lng
-	    delivery
+	def set_coordinates
+		loc = GeoKit::Geocoders::MultiGeocoder.geocode(dropoff_address)
+	    update_attributes(:lat => loc.lat, :lng => loc.lng)
 	end
 end

@@ -6,7 +6,7 @@ class Search < ActiveRecord::Base
 	
 	def couriers
 	  @couriers ||= find_couriers_within_distance
-	  #@couriers = find_couriers(@couriers)
+	  @couriers = find_couriers(@couriers)
 	end
 	
 	private
@@ -30,13 +30,14 @@ class Search < ActiveRecord::Base
 	
 	def find_couriers_within_distance
 		couriers = Courier.within(max_distance, :origin => pickup_address)
-		couriers_without_deliveries = couriers.compact
+		# create a copy that exists only in memory so .delete does not touch activerecord stuff
+		couriers_refined = couriers.compact
 		
-		couriers_without_deliveries.each do |courier|
+		couriers_refined.each do |courier|
 			if courier.deliveries.empty?
 				find_distance_and_create_if_empty(courier, courier.distance)
 			else
-				couriers_without_deliveries.delete(courier)
+				couriers_refined.delete(courier)
 			end
 		end
 		delivery = Delivery.within(max_distance, :origin => pickup_address).order('waypoint_order DESC').first
@@ -45,10 +46,14 @@ class Search < ActiveRecord::Base
 			if delivery.successfully_delivered == false
 				courier = Courier.find(delivery.courier_id)
 				find_distance_and_create_if_empty(courier, delivery.distance)
-				couriers_without_deliveries << courier
+				couriers_refined << courier
 			end
 		end
-		couriers_without_deliveries
+		couriers_refined
+	end
+	
+	def find_couriers_min_volume(couriers)
+		
 	end
 	
 	def find_couriers(couriers)
