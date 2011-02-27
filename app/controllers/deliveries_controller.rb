@@ -46,7 +46,8 @@ class DeliveriesController < ApplicationController
   def create
   	@courier = Courier.find(params[:courier_id])
     @delivery = @courier.deliveries.build(params[:delivery])
-    @delivery = @delivery.set_coordinates(@delivery)
+    @delivery.set_coordinates
+    @courier.add_delivery_mass_and_volume(@delivery)
 
     respond_to do |format|
       if @delivery.save
@@ -64,11 +65,12 @@ class DeliveriesController < ApplicationController
   def update
   	@courier = Courier.find(params[:courier_id])
     @delivery = @courier.deliveries.find(params[:id])
+    @courier.remove_delivery_mass_and_volume(@delivery)
 
     respond_to do |format|
       if @delivery.update_attributes(params[:delivery])
-      	@delivery = @delivery.set_coordinates(@delivery)
-      	@delivery.save
+      	@courier.add_delivery_mass_and_volume(@delivery)
+      	@delivery.set_coordinates
         format.html { redirect_to(courier_delivery_path(@courier, @delivery), :notice => 'Delivery was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -83,6 +85,7 @@ class DeliveriesController < ApplicationController
   def destroy
   	@courier = Courier.find(params[:courier_id])
     @delivery = @courier.deliveries.find(params[:id])
+    @courier.remove_delivery_mass_and_volume(@delivery)
     @delivery.destroy
 
     respond_to do |format|
