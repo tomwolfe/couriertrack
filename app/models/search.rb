@@ -57,7 +57,15 @@ class Search < ActiveRecord::Base
 	end
 	
 	def min_volume_conditions
-	  ["couriers.max_volume >= ?", min_volume] unless min_volume.blank?
+	  ["couriers.avail_volume >= ?", min_volume] unless min_volume.blank?
+	end
+	
+	def min_volume_conditions
+	  ["couriers.avail_mass >= ?", min_mass] unless min_mass.blank?
+	end
+	
+	def transport_mode_conditions
+	  ["couriers.transport_mode = ?", transport_mode] unless transport_mode.blank?
 	end
 	
 	def conditions
