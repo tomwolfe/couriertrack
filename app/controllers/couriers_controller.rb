@@ -41,6 +41,7 @@ class CouriersController < ApplicationController
   # POST /couriers.xml
   def create
     @courier = Courier.new(params[:courier])
+    @courier.set_avail_volume_and_mass
 
     respond_to do |format|
       if @courier.save
@@ -60,6 +61,7 @@ class CouriersController < ApplicationController
 
     respond_to do |format|
       if @courier.update_attributes(params[:courier])
+      	@courier.set_avail_volume_and_mass
         format.html { redirect_to(@courier, :notice => 'Courier was successfully updated.') }
         format.xml  { head :ok }
       else

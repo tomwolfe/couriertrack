@@ -17,6 +17,8 @@ class CreateCouriers < ActiveRecord::Migration
       t.datetime :last_coordinate_update_time
       t.decimal :current_volume, :default => 0
       t.decimal :current_mass, :default => 0
+      t.decimal :avail_volume
+      t.decimal :avail_mass
       t.decimal :lat, :precision => 9, :scale => 6
       t.decimal :lng, :precision => 9, :scale => 6
 

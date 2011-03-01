@@ -52,10 +52,6 @@ class Search < ActiveRecord::Base
 		couriers_refined
 	end
 	
-	def find_couriers_min_volume(couriers)
-		
-	end
-	
 	def find_couriers(couriers)
 	  couriers.find(:all, :conditions => conditions)
 	end
