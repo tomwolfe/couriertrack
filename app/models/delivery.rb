@@ -1,6 +1,8 @@
 class Delivery < ActiveRecord::Base
 	acts_as_mappable :default_units => :kms
 	belongs_to :courier
+	validates :mass, :numericality => {:less_than_or_equal_to => @courier.avail_mass}
+	validates :volume, :numericality => {:less_than_or_equal_to => @courier.avail_volume}
 	
 	TRANSPORT_MODES = [ "Bicycle", "Car", "Truck", "Train", "Airplane", "Boat" ]
 	
