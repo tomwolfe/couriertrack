@@ -20,12 +20,15 @@ class Search < ActiveRecord::Base
 	
 	def find_distance_and_create_if_empty(courier, dist)
 		distance = Distance.where(:courier_id => courier.id, :search_id => id).first
+		cost_per_distance = courier.cost_per_distance * dist
+		est_cost = cost_per_distance + courier.cost_per_distance_per_mass * cost_per_distance * min_mass + courier.cost_per_distance_per_volume * cost_per_distance * min_volume
 		if distance.nil?
 			distance = new_distance(courier)
 			distance.est_distance = dist
+			distance.est_cost = est_cost
 			distance.save
 		end
-		distance.update_attribute(:est_distance, dist)
+		distance.update_attributes(:est_distance => dist, :est_cost => est_cost)
 	end
 	
 	def find_couriers_within_distance
