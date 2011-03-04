@@ -4,7 +4,7 @@ class Delivery < ActiveRecord::Base
 	validates :mass, :numericality => {:less_than_or_equal_to => @courier.avail_mass}
 	validates :volume, :numericality => {:less_than_or_equal_to => @courier.avail_volume}
 	
-	TRANSPORT_MODES = [ "Bicycle", "Car", "Truck", "Train", "Airplane", "Boat" ]
+	TRANSPORT_MODES = [ "Bicycle", "Car", "Truck", "Walking" ]
 	
 	def set_coordinates
 		loc = GeoKit::Geocoders::MultiGeocoder.geocode(dropoff_address)

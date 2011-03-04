@@ -18,6 +18,21 @@ class Search < ActiveRecord::Base
 		distance
 	end
 	
+	def estimate_delivery_datetime(courier, dist)
+		kph = case courier.transport_mode
+			when "Bicycle" then 32
+			when "Car", "Truck" then 64
+			else 5
+		end
+		earliest_delivery = dist/kph + DateTime.now
+		if courier.deliveries.empty?
+		else
+			last_delivery = courier.deliveries.find(:all, successfully_delivered => false).order('waypoint_order DESC').first
+			earliest_delivery = (last_delivery.delivery_due - DateTime.now) + earliest_delivery.hours
+		end
+		earliest_delivery
+	end
+	
 	def find_distance_and_create_if_empty(courier, dist)
 		distance = Distance.where(:courier_id => courier.id, :search_id => id).first
 		cost_per_distance = courier.cost_per_distance * dist
@@ -26,6 +41,7 @@ class Search < ActiveRecord::Base
 			distance = new_distance(courier)
 			distance.est_distance = dist
 			distance.est_cost = est_cost
+			
 			distance.save
 		end
 		distance.update_attributes(:est_distance => dist, :est_cost => est_cost)
