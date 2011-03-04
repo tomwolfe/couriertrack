@@ -3,6 +3,7 @@ class CreateDistances < ActiveRecord::Migration
     create_table :distances do |t|
       t.decimal :est_distance
       t.decimal :est_cost
+      t.datetime :est_time
       t.integer :courier_id
       t.integer :search_id
 
