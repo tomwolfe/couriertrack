@@ -24,11 +24,12 @@ class Search < ActiveRecord::Base
 			when "Car", "Truck" then 64
 			else 5
 		end
-		earliest_delivery = dist/kph + DateTime.now
+		earliest_delivery = (dist/kph).hours
 		if courier.deliveries.empty?
+			earliest_delivery += DateTime.now
 		else
 			last_delivery = courier.deliveries.find(:all, successfully_delivered => false).order('waypoint_order DESC').first
-			earliest_delivery = (last_delivery.delivery_due - DateTime.now) + earliest_delivery.hours
+			earliest_delivery = last_delivery.delivery_due + earliest_delivery
 		end
 		earliest_delivery
 	end
@@ -41,33 +42,50 @@ class Search < ActiveRecord::Base
 			distance = new_distance(courier)
 			distance.est_distance = dist
 			distance.est_cost = est_cost
-			
 			distance.save
 		end
 		distance.update_attributes(:est_distance => dist, :est_cost => est_cost)
 	end
 	
 	def find_couriers_within_distance
-		couriers = Courier.within(max_distance, :origin => pickup_address)
+		pickup_loc = GeoKit::Geocoders::MultiGeocoder.geocode(pickup_address)
+		couriers = Courier.within(max_distance, :origin => pickup_loc)
 		# create a copy that exists only in memory so .delete does not touch activerecord stuff
 		couriers_refined = couriers.compact
 		
 		couriers_refined.each do |courier|
-			if courier.deliveries.empty?
-				find_distance_and_create_if_empty(courier, courier.distance)
+			if courier.deliveries.empty? or courier.deliveries.where(:successfully_delivered => false).first.nil?
+				earliest_delivery_datetime = estimate_delivery_datetime(courier, dist)
+				if earliest_delivery_datetime > delivery_due
+					couriers_refined.delete(courier)
+				else
+					find_distance_and_create_if_empty(courier, courier.distance)
+				end
 			else
-				couriers_refined.delete(courier)
+				couriers_refined.delete(courier)	
 			end
 		end
-		delivery = Delivery.within(max_distance, :origin => pickup_address).order('waypoint_order DESC').first
-		if delivery.nil?
-		else
-			if delivery.successfully_delivered == false
-				courier = Courier.find(delivery.courier_id)
-				find_distance_and_create_if_empty(courier, delivery.distance)
-				couriers_refined << courier
+		couriers = Courier.find(:all)
+		courier_with_deliveries = couriers.compact
+		couriers_with_deliveries.each do |courier|
+			if courier.deliveries.empty? or courier.deliveries.where(:successfully_delivered => false).first.nil?
+				couriers_with_deliveries.delete(courier)
+			else
+				delivery = courier.deliveries.where(:successfully_delivered => false).order('waypoint_order DESC').first
+				if delivery.within(max_distance, :origin => pickup_loc)
+					earliest_delivery_datetime = estimate_delivery_datetime(courier, dist)
+					if earliest_delivery_datetime > delivery_due
+						couriers_refined.delete(courier)
+					else
+						find_distance_and_create_if_empty(courier, delivery.distance)
+					end
+				else
+					couriers_with_deliveries.delete(courier)
+				end
 			end
 		end
+		
+		couriers_refined << couriers_with_deliveries
 		couriers_refined
 	end
 	
