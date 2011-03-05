@@ -34,17 +34,22 @@ class Search < ActiveRecord::Base
 		earliest_delivery
 	end
 	
-	def find_distance_and_create_if_empty(courier, dist)
+	def find_distance_and_create_if_empty(courier, dist, earliest_delivery_datetime, cost)
 		distance = Distance.where(:courier_id => courier.id, :search_id => id).first
-		cost_per_distance = courier.cost_per_distance * dist
-		est_cost = cost_per_distance + courier.cost_per_distance_per_mass * cost_per_distance * min_mass + courier.cost_per_distance_per_volume * cost_per_distance * min_volume
 		if distance.nil?
 			distance = new_distance(courier)
 			distance.est_distance = dist
-			distance.est_cost = est_cost
+			distance.est_cost = cost
+			distance.est_time = earlist_delivery_datetime
 			distance.save
 		end
 		distance.update_attributes(:est_distance => dist, :est_cost => est_cost)
+	end
+	
+	def calc_cost(courier, dist)
+		cost_per_distance = courier.cost_per_distance * dist
+		est_cost = cost_per_distance + courier.cost_per_distance_per_mass * cost_per_distance * min_mass + courier.cost_per_distance_per_volume * cost_per_distance * min_volume
+		est_cost
 	end
 	
 	def find_couriers_within_distance
@@ -59,7 +64,12 @@ class Search < ActiveRecord::Base
 				if earliest_delivery_datetime > delivery_due
 					couriers_refined.delete(courier)
 				else
-					find_distance_and_create_if_empty(courier, courier.distance)
+					cost = calc_cost(courier, courier.distance)
+					if cost > max_cost
+						couriers_refined.delete(courier)
+					else
+						find_distance_and_create_if_empty(courier, courier.distance, earliest_delivery_datetime, cost)
+					end
 				end
 			else
 				couriers_refined.delete(courier)	
@@ -73,11 +83,16 @@ class Search < ActiveRecord::Base
 			else
 				delivery = courier.deliveries.where(:successfully_delivered => false).order('waypoint_order DESC').first
 				if delivery.within(max_distance, :origin => pickup_loc)
-					earliest_delivery_datetime = estimate_delivery_datetime(courier, dist)
+					earliest_delivery_datetime = estimate_delivery_datetime(courier, delivery.distance)
 					if earliest_delivery_datetime > delivery_due
-						couriers_refined.delete(courier)
+						couriers_with_deliveries.delete(courier)
 					else
-						find_distance_and_create_if_empty(courier, delivery.distance)
+						cost = calc_cost(courier, courier.distance)
+						if cost > max_cost
+							couriers_with_deliveries.delete(courier)
+						else
+							find_distance_and_create_if_empty(courier, delivery.distance, earliest_delivery_datetime, cost)							
+						end
 					end
 				else
 					couriers_with_deliveries.delete(courier)
