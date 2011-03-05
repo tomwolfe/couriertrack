@@ -8,6 +8,7 @@ class CreateSearches < ActiveRecord::Migration
       t.datetime :last_coordinate_update_time_greater_than
       t.string :pickup_address
       t.integer :max_distance
+      t.datetime :delivery_due
 
       t.timestamps
     end
