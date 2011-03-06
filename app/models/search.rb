@@ -1,6 +1,6 @@
 class Search < ActiveRecord::Base
 	
-	has_many :distances, :dependent => :destroy
+	has_many :search_couriers, :dependent => :destroy
 	
 	MAX_DISTANCES = [ 1, 2, 5, 10, 20, 50 ]
 	
@@ -11,11 +11,11 @@ class Search < ActiveRecord::Base
 	
 	private
 	
-	def new_distance(courier)
-		distance = Distance.new
-		distance.courier_id = courier.id
-		distance.search_id = id
-		distance
+	def new_search_courier(courier)
+		search_courier = SearchCourier.new
+		search_courier.courier_id = courier.id
+		search_courier.search_id = id
+		search_courier
 	end
 	
 	def estimate_delivery_datetime(courier, dist)
@@ -35,15 +35,15 @@ class Search < ActiveRecord::Base
 	end
 	
 	def find_distance_and_create_if_empty(courier, dist, earliest_delivery_datetime, cost)
-		distance = Distance.where(:courier_id => courier.id, :search_id => id).first
-		if distance.nil?
-			distance = new_distance(courier)
-			distance.est_distance = dist
-			distance.est_cost = cost
-			distance.est_time = earlist_delivery_datetime
-			distance.save
+		search_courier = SearchCourier.where(:courier_id => courier.id, :search_id => id).first
+		if search_courier.nil?
+			search_courier = new_search_courier(courier)
+			search_courier.est_distance = dist
+			search_courier.est_cost = cost
+			search_courier.est_time = earlist_delivery_datetime
+			search_courier.save
 		end
-		distance.update_attributes(:est_distance => dist, :est_cost => est_cost)
+		search_courier.update_attributes(:est_distance => dist, :est_cost => est_cost, :est_time => earliest_delivery_datetime)
 	end
 	
 	def calc_cost(courier, dist)
@@ -56,26 +56,26 @@ class Search < ActiveRecord::Base
 		pickup_loc = GeoKit::Geocoders::MultiGeocoder.geocode(pickup_address)
 		couriers = Courier.within(max_distance, :origin => pickup_loc)
 		# create a copy that exists only in memory so .delete does not touch activerecord stuff
-		couriers_refined = couriers.compact
+		couriers_without_deliveries = couriers.compact
 		
-		couriers_refined.each do |courier|
+		couriers_without_deliveries.each do |courier|
 			if courier.deliveries.empty? or courier.deliveries.where(:successfully_delivered => false).first.nil?
 				earliest_delivery_datetime = estimate_delivery_datetime(courier, dist)
 				if earliest_delivery_datetime > delivery_due
-					couriers_refined.delete(courier)
+					couriers_without_deliveries.delete(courier)
 				else
 					cost = calc_cost(courier, courier.distance)
 					if cost > max_cost
-						couriers_refined.delete(courier)
+						couriers_without_deliveries.delete(courier)
 					else
 						find_distance_and_create_if_empty(courier, courier.distance, earliest_delivery_datetime, cost)
 					end
 				end
 			else
-				couriers_refined.delete(courier)	
+				couriers_without_deliveries.delete(courier)	
 			end
 		end
-		couriers = Courier.find(:all)
+		couriers = Courier.all
 		courier_with_deliveries = couriers.compact
 		couriers_with_deliveries.each do |courier|
 			if courier.deliveries.empty? or courier.deliveries.where(:successfully_delivered => false).first.nil?
@@ -99,9 +99,8 @@ class Search < ActiveRecord::Base
 				end
 			end
 		end
-		
-		couriers_refined << couriers_with_deliveries
-		couriers_refined
+		couriers = couriers_without_deliveries + couriers_with_deliveries
+		couriers
 	end
 	
 	def find_couriers(couriers)

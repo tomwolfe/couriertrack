@@ -1,6 +1,6 @@
-class CreateDistances < ActiveRecord::Migration
+class CreateSearchCourier < ActiveRecord::Migration
   def self.up
-    create_table :distances do |t|
+    create_table :search_courier do |t|
       t.decimal :est_distance
       t.decimal :est_cost
       t.datetime :est_time
@@ -12,6 +12,6 @@ class CreateDistances < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :distances
+    drop_table :search_courier
   end
 end
