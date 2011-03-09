@@ -1,10 +1,11 @@
 <%= form_for([@courier, @delivery]) do |f| %>
-  <% if @delivery.errors.any? %>
+  <% if @delivery.errors.any? or @courier.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@delivery.errors.count, "error") %> prohibited this delivery from being saved:</h2>
+      <h2><%= pluralize(@delivery.errors.count + @courier.errors.count, "error") %> prohibited this delivery from being saved:</h2>
 
       <ul>
-      <% @delivery.errors.full_messages.each do |msg| %>
+      <% all_errors = @delivery.errors.full_messages + @courier.errors.full_messages %>
+      <% all_errors.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>
