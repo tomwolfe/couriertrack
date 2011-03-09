@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(:version => 20110223085756) do
     t.datetime "last_coordinate_update_time"
     t.decimal  "current_volume",               :precision => 10, :scale => 0, :default => 0
     t.decimal  "current_mass",                 :precision => 10, :scale => 0, :default => 0
+    t.decimal  "avail_volume",                 :precision => 10, :scale => 0
+    t.decimal  "avail_mass",                   :precision => 10, :scale => 0
     t.decimal  "lat",                          :precision => 9,  :scale => 6
     t.decimal  "lng",                          :precision => 9,  :scale => 6
     t.datetime "created_at"
@@ -54,9 +56,10 @@ ActiveRecord::Schema.define(:version => 20110223085756) do
     t.datetime "updated_at"
   end
 
-  create_table "distances", :force => true do |t|
+  create_table "search_courier", :force => true do |t|
     t.decimal  "est_distance", :precision => 10, :scale => 0
-    t.decimal  "distance",     :precision => 10, :scale => 0
+    t.decimal  "est_cost",     :precision => 10, :scale => 0
+    t.datetime "est_time"
     t.integer  "courier_id"
     t.integer  "search_id"
     t.datetime "created_at"
@@ -71,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20110223085756) do
     t.datetime "last_coordinate_update_time_greater_than"
     t.string   "pickup_address"
     t.integer  "max_distance"
+    t.datetime "delivery_due"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
