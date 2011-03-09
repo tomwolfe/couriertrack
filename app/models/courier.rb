@@ -7,6 +7,8 @@ class Courier < ActiveRecord::Base
 	
 	validates_numericality_of :current_mass, :less_than_or_equal_to => :max_mass
 	validates_numericality_of :current_volume, :less_than_or_equal_to => :max_volume
+	validates_numericality_of :max_mass, :max_volume, :cost_per_distance, :cost_per_distance_per_mass, :cost_per_distance_per_volume, :greater_than_or_equal_to => 0.01
+	validates_presence_of :transport_mode
 	
 	TRANSPORT_MODES = [ "Bicycle", "Car", "Truck", "Walking" ]
 	
