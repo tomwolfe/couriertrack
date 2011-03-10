@@ -2,11 +2,22 @@ class Search < ActiveRecord::Base
 	
 	has_many :search_couriers, :dependent => :destroy
 	
+	validates_numericality_of :min_volume, :min_mass, :total_cost_less_than, :max_distance, :greater_than_or_equal_to => 0.01
+	validates_presence_of :pickup_address, :transport_mode
+	validates_datetime :delivery_due, :after => DateTime.now
+	validates_datetime :last_coordinate_update_time_greater_than, :before => DateTime.now
+	validate :geocode_address, :if => :pickup_address
+	
 	MAX_DISTANCES = [ 1, 2, 5, 10, 20, 50 ]
 	
 	def couriers
 	  @couriers ||= find_couriers_within_distance
 	  @couriers = find_couriers(@couriers)
+	end
+	
+	def geocode_address
+		pickup_loc = GeoKit::Geocoders::MultiGeocoder.geocode(pickup_address)
+		errors.add(:pickup_address, "Unable to geocode your location from Pickup Address entered.") unless pickup_loc.success
 	end
 	
 	private
