@@ -11,6 +11,8 @@ gem 'authlogic'
 
 gem 'geokit-rails3'
 
+gem 'validates_timeliness'
+
 group :development do
 	gem 'mysql'
 end
