@@ -1,6 +1,7 @@
 class Search < ActiveRecord::Base
 	
 	has_many :search_couriers, :dependent => :destroy
+	has_many :deliveries
 	
 	validates_numericality_of :min_volume, :min_mass, :total_cost_less_than, :max_distance, :greater_than_or_equal_to => 0.01
 	validates_presence_of :pickup_address, :transport_mode
