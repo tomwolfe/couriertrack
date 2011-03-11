@@ -15,6 +15,7 @@ class CreateDeliveries < ActiveRecord::Migration
       t.decimal :lat, :precision => 9, :scale => 6
       t.decimal :lng, :precision => 9, :scale => 6
       t.integer :courier_id
+      t.integer :search_id
 
       t.timestamps
     end
