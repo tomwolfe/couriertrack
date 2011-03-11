@@ -10,7 +10,7 @@
 			<td><%= courier.max_mass %></td>
 			<td><%= courier.distances.first.est_distance %></td>
 			<td><%= link_to 'View Courier', courier_path(courier) %></td>
-			<td><%= link_to 'New Delivery With This Courier', new_courier_delivery_path(courier, @search) %></td>
+			<td><%= link_to 'New Delivery With This Courier', new_courier_delivery_path(courier, :search_id => @search) %></td>
 		</tr>
 	<% end %>
 </table>

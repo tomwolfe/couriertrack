@@ -28,8 +28,8 @@ class DeliveriesController < ApplicationController
   def new
   	@courier = Courier.find(params[:courier_id])
     if params[:search_id]
-    	@search = Search.find(params[:search_id])
-    	@delivery = @courier.deliveries.build(:pickup_address => @search.pickup_address, :mass => @search.min_mass, :volume => @search.min_volume, :delivery_due => @search.delivery_due)
+    	search = Search.find(params[:search_id])
+    	@delivery = @courier.deliveries.build(:pickup_address => search.pickup_address, :mass => search.min_mass, :volume => search.min_volume, :delivery_due => search.delivery_due)
     else
     	@delivery = @courier.deliveries.build
     end
