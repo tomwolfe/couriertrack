@@ -27,7 +27,12 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/new.xml
   def new
   	@courier = Courier.find(params[:courier_id])
-    @delivery = @courier.deliveries.build
+    if params[:search_id]
+    	@search = Search.find(params[:search_id])
+    	@delivery = @courier.deliveries.build(:pickup_address => @search.pickup_address, :mass => @search.min_mass, :volume => @search.min_volume, :delivery_due => @search.delivery_due)
+    else
+    	@delivery = @courier.deliveries.build
+    end
 
     respond_to do |format|
       format.html # new.html.erb
