@@ -13,19 +13,19 @@ class Courier < ActiveRecord::Base
 	TRANSPORT_MODES = [ "Bicycle", "Car", "Truck", "Walking" ]
 	
 	def add_delivery_mass_and_volume(delivery)
-		current_mass = current_mass + delivery.mass
-		current_volume = current_volume + delivery.volume
+		self.current_mass += delivery.mass
+		self.current_volume += delivery.volume
 		set_avail_volume_and_mass
 	end
 	
 	def remove_delivery_mass_and_volume(delivery)
-		current_mass = current_mass - delivery.mass
-		current_volume = current_volume - delivery.volume
+		self.current_mass -= delivery.mass
+		self.current_volume -= delivery.volume
 		set_avail_volume_and_mass
 	end
 	
 	def set_avail_volume_and_mass
-		avail_volume = max_volume - current_volume
-		avail_mass = max_mass - current_mass
+		self.avail_volume = max_volume - current_volume
+		self.avail_mass = max_mass - current_mass
 	end
 end

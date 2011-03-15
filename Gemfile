@@ -13,6 +13,10 @@ gem 'geokit-rails3'
 
 gem 'validates_timeliness'
 
+gem 'google_directions'
+
+gem 'nokogiri'
+
 group :development do
 	gem 'mysql'
 end

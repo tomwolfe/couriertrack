@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20110223085756) do
     t.decimal  "lat",                    :precision => 9,  :scale => 6
     t.decimal  "lng",                    :precision => 9,  :scale => 6
     t.integer  "courier_id"
+    t.integer  "search_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
