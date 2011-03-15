@@ -51,7 +51,6 @@ class DeliveriesController < ApplicationController
   def create
   	@courier = Courier.find(params[:courier_id])
     @delivery = @courier.deliveries.build(params[:delivery])
-    @delivery.set_dropoff_coordinates
     @courier.add_delivery_mass_and_volume(@delivery)
 
     respond_to do |format|
@@ -77,7 +76,6 @@ class DeliveriesController < ApplicationController
     @courier.remove_delivery_mass_and_volume(@delivery)
     @delivery.attributes = params[:delivery] # rather than update_attributes so not saved until transaction
     @courier.add_delivery_mass_and_volume(@delivery)
-    @delivery.set_coordinates
 
     respond_to do |format|
       if @delivery.valid? & @courier.valid?
