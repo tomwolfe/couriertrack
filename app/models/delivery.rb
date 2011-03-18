@@ -7,12 +7,12 @@ class Delivery < ActiveRecord::Base
 	validates_numericality_of :number_of_packages, :greater_than_or_equal_to => 1, :only_integer => true
 	validates_numericality_of :mass, :volume, :greater_than_or_equal_to => 0.01
 	validates_datetime :delivery_due, :after => :calc_earliest_delivery_time
-	before_validation :set_dropoff_coordinates
+	validate :set_dropoff_coordinates, :if => :dropoff_address
 	
 	def calc_earliest_delivery_time
 		last_delivery = self.courier.deliveries.where(:successfully_delivered => false).order('waypoint_order DESC').first
 		if last_delivery.nil?
-			directions = GoogleDirections.new(self.courier.lat + " " + self.courier.lng, pickup_address)
+			directions = GoogleDirections.new(false, self.courier.transport_mode, "#{self.courier.lat} #{self.courier.lng}", pickup_address)
 		else
 			last_delivery_due = last_delivery.delivery_due
 			directions = GoogleDirections.new(last_delivery.dropoff_address, pickup_address)
@@ -23,6 +23,7 @@ class Delivery < ActiveRecord::Base
 	
 	def set_dropoff_coordinates
 		loc = GeoKit::Geocoders::MultiGeocoder.geocode(dropoff_address)
+		errors.add(:dropoff_address, "Unable to geocode provided Dropoff Address.") unless loc.success
 		lat = loc.lat
 	    lng = loc.lng
 	end
