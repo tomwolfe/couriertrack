@@ -23,8 +23,11 @@ class Delivery < ActiveRecord::Base
 	
 	def set_dropoff_coordinates
 		loc = GeoKit::Geocoders::MultiGeocoder.geocode(dropoff_address)
-		errors.add(:dropoff_address, "Unable to geocode provided Dropoff Address.") unless loc.success
-		lat = loc.lat
-	    lng = loc.lng
+		if loc.success
+			lat = loc.lat
+	    	lng = loc.lng
+		else
+			errors.add(:dropoff_address, "Unable to geocode provided Dropoff Address.")	
+		end
 	end
 end
