@@ -10,7 +10,8 @@ class Courier < ActiveRecord::Base
 	validates_numericality_of :max_mass, :max_volume, :cost_per_distance, :cost_per_distance_per_mass, :cost_per_distance_per_volume, :greater_than_or_equal_to => 0.01
 	validates_presence_of :transport_mode
 	
-	TRANSPORT_MODES = [ "Bicycle", "Car", "Truck", "Walking" ]
+	# the three types supported by the google directions api
+	TRANSPORT_MODES = [ "Bicycling", "Driving", "Walking" ]
 	
 	def add_delivery_mass_and_volume(delivery)
 		self.current_mass += delivery.mass
