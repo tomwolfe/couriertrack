@@ -31,6 +31,18 @@ class CouriersController < ApplicationController
       format.xml  { render :xml => @courier }
     end
   end
+  
+  # GET /couriers/route
+  # GET /couriers/route.xml
+  def route
+    @courier = Courier.find(params[:id])
+    @route = @courier.calc_route
+
+    respond_to do |format|
+      format.html # route.html.erb
+      format.xml  { render :xml => @courier }
+    end
+  end
 
   # GET /couriers/1/edit
   def edit
