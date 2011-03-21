@@ -28,4 +28,13 @@ class Courier < ActiveRecord::Base
 		self.avail_volume = max_volume - current_volume
 		self.avail_mass = max_mass - current_mass
 	end
+	
+	def calc_route
+		deliveries = self.deliveries.where(:successfully_delivered => false).order('delivery_due ASC')
+		pickup_addresses = Array.new
+		deliveries.each do |delivery|
+			pickup_addresses.push(delivery.pickup_address)
+		end
+		route = GoogleDirections.new(true, "#{lat} #{lng}", *pickup_addresses)
+	end
 end
