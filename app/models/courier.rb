@@ -31,7 +31,7 @@ class Courier < ActiveRecord::Base
 	end
 	
 	def calc_route
-		deliveries = self.deliveries.where(:successfully_delivered => false).order('delivery_due ASC')
+		deliveries = self.deliveries.where(:successfully_delivered => false)
 		pickup_addresses = Array.new
 		deliveries.each do |delivery|
 			pickup_addresses.push(delivery.pickup_address)
