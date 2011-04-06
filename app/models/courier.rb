@@ -56,4 +56,13 @@ class Courier < ActiveRecord::Base
 	def two_dimensional_array(width, height)
 		Array.new(width).map!{ Array.new(height) }
 	end
+	
+	def calc_route
+		deliveries = self.deliveries.where(:successfully_delivered => false)
+		pickup_addresses = Array.new
+		deliveries.each do |delivery|
+			pickup_addresses.push(delivery.pickup_address)
+		end
+		route = GoogleDirections.new(true, "#{lat} #{lng}", *pickup_addresses)
+	end
 end

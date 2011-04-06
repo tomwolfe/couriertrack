@@ -13,12 +13,13 @@ class Delivery < ActiveRecord::Base
 		last_delivery = self.courier.deliveries.where(:successfully_delivered => false).order('waypoint_order DESC').first
 		if last_delivery.nil?
 			directions = GoogleDirections.new(false, self.courier.transport_mode, "#{self.courier.lat} #{self.courier.lng}", pickup_address)
+			earliest_delivery_time = DateTime.now + directions.drive_time_in_minutes.minutes
 		else
-			last_delivery_due = last_delivery.delivery_due
-			directions = GoogleDirections.new(last_delivery.dropoff_address, pickup_address)
-			earliest_delivery_time = calc_delivery_time(last_delivery) + last_delivery_due
+			# TODO rather than .delivery_due calc time for whole route just in case courier is running late
+			directions = GoogleDirections.new(false, self.courier.transport_mode, last_delivery.dropoff_address, pickup_address)
+			earliest_delivery_time = last_delivery.delivery_due + directions.drive_time_in_minutes.minutes
 		end
-		DateTime.now + directions.drive_time_in_minutes.minutes
+		earliest_delivery_time
 	end
 	
 	def set_dropoff_coordinates
