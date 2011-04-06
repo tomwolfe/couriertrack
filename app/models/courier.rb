@@ -25,8 +25,35 @@ class Courier < ActiveRecord::Base
 		set_avail_volume_and_mass
 	end
 	
-	def set_avail_volume_and_mass
-		self.avail_volume = max_volume - current_volume
-		self.avail_mass = max_mass - current_mass
+	def cost
+		deliveries = self.deliveries.where(successfully_delivered => false)
+		number_of_points = (deliveries.count*2)+1
+		cost_matrix = two_dimensional_array(number_of_points, number_of_points)
+		
+		z = 2
+		for x in 1..number_of_points-1 do
+			for y in z..number_of_points-1 do
+				cost_matrix[x][y] = deliveries[x].distance_to(deliveries[y])
+			end
+			z += 1
+		end
+		
+		for y in 1..number_of_points-1 do
+			cost_matrix[0][y] = self.distance_to(deliveries[y-1])
+		end
+		
+		for y in 0..number_of_points do
+			cost_matrix[y][y] = 0
+		end
+		
+		for x in 1..number_of_points-1 do
+			for y in 0..number_of_points-1 do
+				cost_matrix[x][y]
+			end
+		end
+	end
+	
+	def two_dimensional_array(width, height)
+		Array.new(width).map!{ Array.new(height) }
 	end
 end
