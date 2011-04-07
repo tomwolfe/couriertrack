@@ -30,6 +30,7 @@ class Courier < ActiveRecord::Base
 		number_of_points = (deliveries.count*2)+1
 		cost_matrix = two_dimensional_array(number_of_points, number_of_points)
 		
+		# compute distance for top right triangle of matrix
 		z = 2
 		for x in 1..number_of_points-1 do
 			for y in z..number_of_points-1 do
@@ -38,17 +39,20 @@ class Courier < ActiveRecord::Base
 			z += 1
 		end
 		
+		# compute distance for top of matrix
 		for y in 1..number_of_points-1 do
 			cost_matrix[0][y] = self.distance_to(deliveries[y-1])
 		end
 		
+		# diagonal will be all 0
 		for y in 0..number_of_points do
 			cost_matrix[y][y] = 0
 		end
 		
+		# copy distances from top right triangle to bottom left
 		for x in 1..number_of_points-1 do
-			for y in 0..number_of_points-1 do
-				cost_matrix[x][y]
+			for y in 0..x-1 do
+				cost_matrix[x][y] = cost_matrix[y][x]
 			end
 		end
 	end
