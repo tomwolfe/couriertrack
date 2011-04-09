@@ -27,6 +27,11 @@ class Courier < ActiveRecord::Base
 	
 	def cost
 		deliveries = self.deliveries.where(successfully_delivered => false)
+		pickup_and_dropoff_addresses = Array.new
+		deliveries.each do |delivery|
+			pickup_and_dropoff_addresses.push(delivery.pickup_address)
+			pickup_and_dropoff_addresses.push(delivery.dropoff_address)			
+		end
 		number_of_points = (deliveries.count*2)+1
 		cost_matrix = two_dimensional_array(number_of_points, number_of_points)
 		
