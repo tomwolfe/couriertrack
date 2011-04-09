@@ -28,25 +28,27 @@ class Courier < ActiveRecord::Base
 	def cost
 		deliveries = self.deliveries.where(successfully_delivered => false)
 		pickup_and_dropoff_addresses = Array.new
+		pickup_and_dropoff_addresses.push(self)
 		deliveries.each do |delivery|
-			pickup_and_dropoff_addresses.push(delivery.pickup_address)
-			pickup_and_dropoff_addresses.push(delivery.dropoff_address)			
+			pickup_and_dropoff_addresses.push(GeoKit::Geocoders::MultiGeocoder.geocode(delivery.pickup_address))
+			pickup_and_dropoff_addresses.push(GeoKit::Geocoders::MultiGeocoder.geocode(delivery.dropoff_address))			
 		end
-		number_of_points = (deliveries.count*2)+1
+		number_of_points = pickup_and_dropoff_addresses.count-1
 		cost_matrix = two_dimensional_array(number_of_points, number_of_points)
 		
 		# compute distance for top right triangle of matrix
 		z = 2
-		for x in 1..number_of_points-1 do
-			for y in z..number_of_points-1 do
-				cost_matrix[x][y] = deliveries[x].distance_to(deliveries[y])
+		for x in 1..number_of_points do
+			for y in z..number_of_points do
+				cost_matrix[x][y] = pickup_and_dropoff_addresses[x].distance_to(pickup_and_dropoff_addresses[y])
 			end
 			z += 1
 		end
 		
+		
 		# compute distance for top of matrix
-		for y in 1..number_of_points-1 do
-			cost_matrix[0][y] = self.distance_to(deliveries[y-1])
+		for y in 1..number_of_points do
+			cost_matrix[0][y] = self.distance_to(pickup_and_dropoff_addresses[y])
 		end
 		
 		# diagonal will be all 0
@@ -55,7 +57,7 @@ class Courier < ActiveRecord::Base
 		end
 		
 		# copy distances from top right triangle to bottom left
-		for x in 1..number_of_points-1 do
+		for x in 1..number_of_points do
 			for y in 0..x-1 do
 				cost_matrix[x][y] = cost_matrix[y][x]
 			end
