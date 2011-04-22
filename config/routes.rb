@@ -1,7 +1,5 @@
 Couriertrack::Application.routes.draw do
 
-  resources :distance_prices
-
   resources :searches, :user_sessions, :courier_sessions, :users
   
   match 'courier_login' => 'courier_sessions#new', :as => :courier_login
@@ -11,7 +9,10 @@ Couriertrack::Application.routes.draw do
   match 'user_logout' => 'user_sessions#destroy', :as => :user_logout
 
   resources :couriers do
-  	resources :deliveries
+  	resources :deliveries do
+  		resources :dropoffs
+  		resources :pickups
+  	end
   end
 
   # The priority is based upon order of creation:

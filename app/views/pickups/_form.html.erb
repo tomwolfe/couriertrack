@@ -1,0 +1,29 @@
+<%= form_for(@pickup) do |f| %>
+  <% if @pickup.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@pickup.errors.count, "error") %> prohibited this pickup from being saved:</h2>
+
+      <ul>
+      <% @pickup.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :pickup_address %><br />
+    <%= f.text_field :pickup_address %>
+  </div>
+  <div class="field">
+    <%= f.label :pickup_name %><br />
+    <%= f.text_field :pickup_name %>
+  </div>
+  <div class="field">
+    <%= f.label :pickup_after %><br />
+    <%= f.datetime_select :pickup_after %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

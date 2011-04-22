@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  dropoff_address: MyString
+  dropoff_name: MyString
+  dropoff_due: 2011-04-22 15:04:48
+
+two:
+  dropoff_address: MyString
+  dropoff_name: MyString
+  dropoff_due: 2011-04-22 15:04:48
