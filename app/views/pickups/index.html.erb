@@ -1,0 +1,27 @@
+<h1>Listing pickups</h1>
+
+<table>
+  <tr>
+    <th>Pickup address</th>
+    <th>Pickup name</th>
+    <th>Pickup after</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @pickups.each do |pickup| %>
+  <tr>
+    <td><%= pickup.pickup_address %></td>
+    <td><%= pickup.pickup_name %></td>
+    <td><%= pickup.pickup_after %></td>
+    <td><%= link_to 'Show', courier_delivery_pickup_path(@courier, @delivery, pickup) %></td>
+    <td><%= link_to 'Edit', edit_courier_delivery_pickup_path(@courier, @delivery, pickup) %></td>
+    <td><%= link_to 'Destroy', [@courier, @delivery, pickup], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Dropoff', new_courier_delivery_pickup_path(@courier, @delivery) %>

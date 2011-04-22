@@ -58,7 +58,7 @@ class DeliveriesController < ApplicationController
       	Delivery.transaction do
       		@courier.save!
       		@delivery.save!
-      		format.html { redirect_to(courier_delivery_path(@courier, @delivery), :notice => 'Delivery was successfully created.') }
+      		format.html { redirect_to(courier_delivery_pickups_path(@courier, @delivery), :notice => 'Delivery was successfully created.') }
         	format.xml  { render :xml => @delivery, :status => :created, :location => @delivery }
       	end
       else

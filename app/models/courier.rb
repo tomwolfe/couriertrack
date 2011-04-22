@@ -25,8 +25,7 @@ class Courier < ActiveRecord::Base
 		set_avail_volume_and_mass
 	end
 	
-	def cost
-		deliveries = self.deliveries.where(successfully_delivered => false)
+	def cost(deliveries)
 		pickup_and_dropoff_addresses = Array.new
 		pickup_and_dropoff_addresses.push(self)
 		deliveries.each do |delivery|
@@ -69,11 +68,8 @@ class Courier < ActiveRecord::Base
 	end
 	
 	def calc_route
-		deliveries = self.deliveries.where(:successfully_delivered => false)
-		pickup_addresses = Array.new
-		deliveries.each do |delivery|
-			pickup_addresses.push(delivery.pickup_address)
-		end
-		route = GoogleDirections.new(true, "#{lat} #{lng}", *pickup_addresses)
+		deliveries = self.deliveries.where(:successfully_delivered => false).order('delivery_due ASC')
+		cost_matrix = cost(deliveries)
+		
 	end
 end
