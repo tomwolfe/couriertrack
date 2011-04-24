@@ -29,8 +29,10 @@ class Courier < ActiveRecord::Base
 		pickup_and_dropoff_addresses = Array.new
 		pickup_and_dropoff_addresses.push(self)
 		deliveries.each do |delivery|
-			pickup_and_dropoff_addresses.push(GeoKit::Geocoders::MultiGeocoder.geocode(delivery.pickup_address))
-			pickup_and_dropoff_addresses.push(GeoKit::Geocoders::MultiGeocoder.geocode(delivery.dropoff_address))			
+			unless delivery.pickup.nil? && delivery.dropoff.nil?
+				pickup_and_dropoff_addresses.push(delivery.pickup)
+				pickup_and_dropoff_addresses.push(delivery.dropoff)
+			end
 		end
 		number_of_points = pickup_and_dropoff_addresses.count-1
 		cost_matrix = two_dimensional_array(number_of_points, number_of_points)
@@ -61,6 +63,7 @@ class Courier < ActiveRecord::Base
 				cost_matrix[x][y] = cost_matrix[y][x]
 			end
 		end
+		cost_matrix
 	end
 	
 	def two_dimensional_array(width, height)

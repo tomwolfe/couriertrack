@@ -37,7 +37,7 @@ class Search < ActiveRecord::Base
 			else 5
 		end
 		earliest_delivery = (dist/kph).hours
-		if courier.deliveries.empty?
+		if courier.deliveries.nil?
 			earliest_delivery += DateTime.now
 		else
 			last_delivery = courier.deliveries.find(:all, successfully_delivered => false).order('waypoint_order DESC').first
@@ -71,7 +71,7 @@ class Search < ActiveRecord::Base
 		couriers_without_deliveries = couriers.compact
 		
 		couriers_without_deliveries.each do |courier|
-			if courier.deliveries.empty? or courier.deliveries.where(:successfully_delivered => false).first.nil?
+			if courier.deliveries.nil? or courier.deliveries.where(:successfully_delivered => false).first.nil?
 				earliest_delivery_datetime = estimate_delivery_datetime(courier, dist)
 				if earliest_delivery_datetime > delivery_due
 					couriers_without_deliveries.delete(courier)
@@ -90,7 +90,7 @@ class Search < ActiveRecord::Base
 		couriers = Courier.all
 		courier_with_deliveries = couriers.compact
 		couriers_with_deliveries.each do |courier|
-			if courier.deliveries.empty? or courier.deliveries.where(:successfully_delivered => false).first.nil?
+			if courier.deliveries.nil? or courier.deliveries.where(:successfully_delivered => false).first.nil?
 				couriers_with_deliveries.delete(courier)
 			else
 				delivery = courier.deliveries.where(:successfully_delivered => false).order('waypoint_order DESC').first
