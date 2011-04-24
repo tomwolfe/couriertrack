@@ -1,8 +1,8 @@
 class Delivery < ActiveRecord::Base
 	belongs_to :courier
 	belongs_to :search
-	has_one :pickup
-	has_one :dropoff
+	has_one :pickup, :dependent => :destroy
+	has_one :dropoff, :dependent => :destroy
 	
 	validates_numericality_of :number_of_packages, :greater_than_or_equal_to => 1, :only_integer => true
 	validates_numericality_of :mass, :volume, :greater_than_or_equal_to => 0.01

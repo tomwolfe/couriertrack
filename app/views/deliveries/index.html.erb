@@ -2,28 +2,32 @@
 
 <table>
   <tr>
-    <th>Pickup address</th>
-    <th>Pickup name</th>
-    <th>Dropoff address</th>
-    <th>Dropoff name</th>
     <th>Number of packages</th>
     <th>Mass</th>
     <th>Volume</th>
     <th>Delivery due</th>
     <th>Succesfully delivered</th>
+    <th>Pickup</th>
+    <th>Dropoff</th>
   </tr>
 
 <% @deliveries.each do |delivery| %>
   <tr>
-    <td><%= delivery.pickup_address %></td>
-    <td><%= delivery.pickup_name %></td>
-    <td><%= delivery.dropoff_address %></td>
-    <td><%= delivery.dropoff_name %></td>
     <td><%= delivery.number_of_packages %></td>
     <td><%= delivery.mass %></td>
     <td><%= delivery.volume %></td>
     <td><%= delivery.delivery_due %></td>
     <td><%= delivery.successfully_delivered %></td>
+    <td><%= if delivery.pickup.nil?
+    			link_to 'Create Pickup', new_courier_delivery_pickup_path(@courier, delivery)
+	    	else
+	    		link_to 'Show Pickup', courier_delivery_pickup_path(@courier, delivery, delivery.pickup)
+	    	end %></td>
+    <td><%= if delivery.dropoff.nil?
+    			link_to 'Create Dropoff', new_courier_delivery_dropoff_path(@courier, delivery)
+	    	else
+	    		link_to 'Show Dropoff', courier_delivery_dropoff_path(@courier, delivery, delivery.dropoff)
+	    	end %></td>
     <td><%= link_to 'Show', courier_delivery_path(@courier, delivery) %></td>
     <td><%= link_to 'Edit', edit_courier_delivery_path(@courier, delivery) %></td>
     <td><%= link_to 'Destroy', [@courier, delivery], :confirm => 'Are you sure?', :method => :delete %></td>
