@@ -62,6 +62,7 @@ class Courier < ActiveRecord::Base
 				cost_matrix[x][y] = cost_matrix[y][x]
 			end
 		end
+		cost_matrix
 	end
 	
 	def two_dimensional_array(width, height)
