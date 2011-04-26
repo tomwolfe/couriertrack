@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  pickup_address: MyString
+  pickup_name: MyString
+  pickup_after: 2011-04-22 15:03:44
+
+two:
+  pickup_address: MyString
+  pickup_name: MyString
+  pickup_after: 2011-04-22 15:03:44

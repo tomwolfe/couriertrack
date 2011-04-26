@@ -1,0 +1,27 @@
+<h1>Listing dropoffs</h1>
+
+<table>
+  <tr>
+    <th>Dropoff address</th>
+    <th>Dropoff name</th>
+    <th>Dropoff due</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @dropoffs.each do |dropoff| %>
+  <tr>
+    <td><%= dropoff.dropoff_address %></td>
+    <td><%= dropoff.dropoff_name %></td>
+    <td><%= dropoff.dropoff_due %></td>
+    <td><%= link_to 'Show', courier_delivery_dropoff_path(@courier, @delivery, dropoff) %></td>
+    <td><%= link_to 'Edit', edit_courier_delivery_dropoff_path(@courier, @delivery, dropoff) %></td>
+    <td><%= link_to 'Destroy', [@courier, @delivery, dropoff], :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Dropoff', new_courier_delivery_dropoff_path(@courier, @delivery) %>

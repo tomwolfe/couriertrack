@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Dropoff address:</b>
+  <%= @dropoff.dropoff_address %>
+</p>
+
+<p>
+  <b>Dropoff name:</b>
+  <%= @dropoff.dropoff_name %>
+</p>
+
+<p>
+  <b>Dropoff due:</b>
+  <%= @dropoff.dropoff_due %>
+</p>
+
+
+<%= link_to 'Edit', edit_courier_delivery_dropoff_path(@courier, @delivery, @dropoff) %> |
+<%= link_to 'Back', courier_delivery_dropoffs_path %>

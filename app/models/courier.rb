@@ -25,13 +25,14 @@ class Courier < ActiveRecord::Base
 		set_avail_volume_and_mass
 	end
 	
-	def cost
-		deliveries = self.deliveries.where(successfully_delivered => false)
+	def cost(deliveries)
 		pickup_and_dropoff_addresses = Array.new
 		pickup_and_dropoff_addresses.push(self)
 		deliveries.each do |delivery|
-			pickup_and_dropoff_addresses.push(GeoKit::Geocoders::MultiGeocoder.geocode(delivery.pickup_address))
-			pickup_and_dropoff_addresses.push(GeoKit::Geocoders::MultiGeocoder.geocode(delivery.dropoff_address))			
+			unless delivery.pickup.nil? && delivery.dropoff.nil?
+				pickup_and_dropoff_addresses.push(delivery.pickup)
+				pickup_and_dropoff_addresses.push(delivery.dropoff)
+			end
 		end
 		number_of_points = pickup_and_dropoff_addresses.count-1
 		cost_matrix = two_dimensional_array(number_of_points, number_of_points)
@@ -70,11 +71,8 @@ class Courier < ActiveRecord::Base
 	end
 	
 	def calc_route
-		deliveries = self.deliveries.where(:successfully_delivered => false)
-		pickup_addresses = Array.new
-		deliveries.each do |delivery|
-			pickup_addresses.push(delivery.pickup_address)
-		end
-		route = GoogleDirections.new(true, "#{lat} #{lng}", *pickup_addresses)
+		deliveries = self.deliveries.where(:successfully_delivered => false).order('delivery_due ASC')
+		cost_matrix = cost(deliveries)
+		
 	end
 end

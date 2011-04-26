@@ -1,0 +1,29 @@
+<%= form_for(@dropoff) do |f| %>
+  <% if @dropoff.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@dropoff.errors.count, "error") %> prohibited this dropoff from being saved:</h2>
+
+      <ul>
+      <% @dropoff.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :dropoff_address %><br />
+    <%= f.text_field :dropoff_address %>
+  </div>
+  <div class="field">
+    <%= f.label :dropoff_name %><br />
+    <%= f.text_field :dropoff_name %>
+  </div>
+  <div class="field">
+    <%= f.label :dropoff_due %><br />
+    <%= f.datetime_select :dropoff_due %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

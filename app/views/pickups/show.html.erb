@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Pickup address:</b>
+  <%= @pickup.pickup_address %>
+</p>
+
+<p>
+  <b>Pickup name:</b>
+  <%= @pickup.pickup_name %>
+</p>
+
+<p>
+  <b>Pickup after:</b>
+  <%= @pickup.pickup_after %>
+</p>
+
+
+<%= link_to 'Edit', edit_courier_delivery_pickup_path(@courier, @delivery, @pickup) %> |
+<%= link_to 'Back', courier_delivery_pickups_path %>
